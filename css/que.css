@@ -1,0 +1,273 @@
+/* styles.css */
+
+/* Paleta de colores del logotipo */
+:root {
+    --fondo-principal: #f5f1ed;
+    --texto-principal: #3a3a3a;
+    --texto-secundario: #665d50;
+    --acento: #d4a76a;
+    --hoja: #a5c185;
+}
+
+/* Resto del CSS */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--fondo-principal);
+    color: var(--texto-principal);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Cabecera */
+header {
+    text-align: center;
+    padding: 40px 0 20px;
+    background: linear-gradient(to bottom, #ffffff, var(--fondo-principal));
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.logo-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--texto-principal);
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.tagline {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    color: var(--texto-secundario);
+    font-weight: 300;
+    margin-top: 0;
+    padding-bottom: 20px;
+}
+
+/* Navegación mejorada */
+nav {
+    background-color: var(--texto-secundario);
+    padding: 15px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+    position: relative;
+}
+
+nav ul li a {
+    color: var(--fondo-principal);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+nav ul li a:hover {
+    color: var(--acento);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav ul li a.active {
+    color: var(--acento);
+}
+
+nav ul li a.active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--acento);
+    transition: width 0.3s;
+}
+
+nav ul li a:hover::before,
+nav ul li a.active::before {
+    width: 80%;
+}
+
+/* Secciones */
+section {
+    padding: 60px 0;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--texto-principal);
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--acento);
+}
+
+/* Acerca de nosotros */
+.about-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+}
+
+.about-card {
+    font-family: 'Montserrat', sans-serif;
+    background-color: white;
+    border: 1px solid #e0d8d0;
+    border-radius: 12px;
+    padding: 30px 25px;
+    width: calc(50% - 40px);
+    text-align: left;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.about-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 14px 20px rgba(0, 0, 0, 0.1);
+}
+
+.about-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--texto-principal);
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.about-title::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background-color: var(--hoja);
+}
+
+.about-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--texto-secundario);
+    line-height: 1.7;
+}
+
+/* Pie de página */
+footer {
+    background-color: var(--texto-secundario);
+    color: var(--fondo-principal);
+    padding: 40px 0 20px;
+    text-align: center;
+}
+
+.social-icons {
+    margin-bottom: 30px;
+}
+
+.social-icons a {
+    color: var(--fondo-principal);
+    font-size: 28px;
+    margin: 0 15px;
+    transition: color 0.3s, transform 0.3s;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    color: var(--acento);
+    transform: translateY(-5px);
+}
+
+.footer-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+
+/* Adornos decorativos */
+.decoration {
+    position: absolute;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.leaf-1 {
+    top: 20%;
+    left: 5%;
+    transform: rotate(-20deg);
+    font-size: 120px;
+    color: var(--hoja);
+}
+
+.leaf-2 {
+    bottom: 10%;
+    right: 5%;
+    transform: rotate(30deg);
+    font-size: 150px;
+    color: var(--hoja);
+}

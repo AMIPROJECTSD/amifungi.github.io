@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/AMI_ESTILO.css">
+    <title>Gráfico - FUNGI MAGIC</title>
+    <style>
+      /* Paleta de colores del logotipo */
+      :root {
+        --fondo-principal: #f5f1ed; /* Beige claro */
+        --texto-principal: #3a3a3a; /* Negro */
+        --texto-secundario: #665d50; /* Marrón oscuro */
+        --acento: #d4a76a; /* Marrón claro/ocre */
+      }
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: var(--fondo-principal);
+        color: var(--texto-principal);
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      .chart-container {
+        position: relative;
+        height: 400px;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+      .controls {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
+      button {
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .instructions {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #666;
+      }
+      .stats-container {
+        display: flex;
+        justify-content: center;
+        margin: 15px 0;
+        gap: 20px;
+      }
+      .stat-box {
+        text-align: left;
+        padding: 15px 20px;
+        border-radius: 8px;
+        flex: 1;
+        max-width: 200px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      .stat-box:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s;
+      }
+      .temp-stat {
+        background-color: rgba(255, 192, 203, 0.2);
+        border-left: 4px solid rgb(255, 99, 132);
+      }
+      .hum-stat {
+        background-color: rgba(173, 216, 230, 0.2);
+        border-left: 4px solid rgb(54, 162, 235);
+      }
+      .stat-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #333;
+      }
+      .stat-value {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #222;
+      }
+      .stat-minmax {
+        display: flex;
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+      }
+      .stat-min,
+      .stat-max {
+        display: inline;
+        margin-right: 15px;
+      }
+      .stat-label {
+        display: none;
+      }
+      @media (max-width: 768px) {
+        .stats-container {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .stat-box {
+          width: 100%;
+        }
+      }
+
+      /* Estilos anteriores */
+
+      /* Cabecera */
+      header {
+        text-align: center;
+        width: 100%;
+        height: 40px;
+      }
+
+      .logo-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo-img {
+        width: 150px;
+        height: auto;
+        margin-bottom: 20px;
+      }
+
+      .logo-text {
+        font-family: "Montserrat", sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--texto-principal);
+        text-align: center;
+      }
+
+      /* Navegación */
+      nav {
+        background-color: var(--texto-secundario);
+        padding: 15px 0;
+        width: 100%;
+        margin-top: 40px !important;
+      }
+
+      nav ul {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav ul li {
+        margin: 0 15px;
+      }
+
+      nav ul li a {
+        color: var(--fondo-principal);
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      nav ul li a:hover {
+        color: var(--acento);
+      }
+
+      /* Secciones */
+      section {
+        padding: 40px 0;
+      }
+
+      /* Pie de página */
+      footer {
+        background-color: var(--texto-secundario);
+        color: var(--fondo-principal);
+        padding: 30px 0;
+        text-align: center;
+        width: 100%;
+        margin-top: 60px;
+      }
+
+      .social-icons {
+        margin-bottom: 20px;
+      }
+
+      .social-icons a {
+        color: var(--fondo-principal);
+        font-size: 24px;
+        margin: 0 10px;
+        transition: color 0.3s;
+      }
+
+      .social-icons a:hover {
+        color: var(--acento);
+      }
+
+      .footer-text {
+        font-family: "Montserrat", sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+      }
+
+      .title {
+        margin: 40px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="../paginas/Nosotros.html">Nosotros</a></li>
+        <li><a href="../paginas/QREISHI.html">Que es el reishi</a></li>
+        <li><a href="../paginas/inv.html">Invernadero</a></li>
+        <li><a href="../paginas/grafico.html">Gráfico</a></li>
+      </ul>
+    </nav>
+
+    <h1 class="title">Gráfico de Temperatura y Humedad</h1>
+
+    <div class="container">
+      <div class="stats-container">
+        <div class="stat-box temp-stat">
+          <div class="stat-title">Temperatura Promedio</div>
+          <div class="stat-value" id="temp-avg">--</div>
+          <div class="stat-minmax">
+            <span class="stat-min">Min: <span id="temp-min">--</span></span> /
+            <span class="stat-max">Max: <span id="temp-max">--</span></span>
+          </div>
+        </div>
+        <div class="stat-box hum-stat">
+          <div class="stat-title">Humedad Promedio</div>
+          <div class="stat-value" id="hum-avg">--</div>
+          <div class="stat-minmax">
+            <span class="stat-min">Min: <span id="hum-min">--</span></span> /
+            <span class="stat-max">Max: <span id="hum-max">--</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="controls">
+        <button id="resetZoom">Restablecer Zoom</button>
+      </div>
+      <div class="instructions">
+        <p>
+          Usa la rueda del ratón para hacer zoom y arrastra para navegar por el
+          gráfico.
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/profile.php?id=61572998506026"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/ami_fungi.magic66/"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@AmiFungiMagic"><i class="fab fa-youtube"></i></a>
+      </div>
+      <p class="footer-text">
+        &copy; 2023 AMI FUNGI MAGIC. Todos los derechos reservados.
+      </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0"></script>
+    <script>
+      // Esperar a que el DOM esté completamente cargado
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("../datos.json")
+          .then((res) => res.json())
+          .then((dataJson) => {
+            // Obtener el contexto del canvas
+            const ctx = document.getElementById("myChart").getContext("2d");
+
+            // Datos de temperatura y humedad
+            const sensorData = dataJson;
+
+            // Calcular estadísticas
+            const calcularEstadisticas = (datos, propiedad) => {
+              const valores = datos.map((item) => item[propiedad]);
+              const suma = valores.reduce((acc, val) => acc + val, 0);
+              const promedio = suma / valores.length;
+              const min = Math.min(...valores);
+              const max = Math.max(...valores);
+              return { promedio, min, max };
+            };
+
+            const estadisticasTemp = calcularEstadisticas(
+              sensorData,
+              "temperatura"
+            );
+            const estadisticasHum = calcularEstadisticas(sensorData, "humedad");
+
+            // Mostrar estadísticas en la interfaz
+            document.getElementById("temp-avg").textContent =
+              estadisticasTemp.promedio.toFixed(2) + " °C";
+            document.getElementById("temp-min").textContent =
+              estadisticasTemp.min.toFixed(1) + " °C";
+            document.getElementById("temp-max").textContent =
+              estadisticasTemp.max.toFixed(1) + " °C";
+            document.getElementById("hum-avg").textContent =
+              estadisticasHum.promedio.toFixed(2) + " %";
+            document.getElementById("hum-min").textContent =
+              estadisticasHum.min.toFixed(1) + " %";
+            document.getElementById("hum-max").textContent =
+              estadisticasHum.max.toFixed(1) + " %";
+
+            // Formatear las etiquetas de tiempo para mostrar fecha y hora
+            const labels = sensorData.map((item) => {
+              const date = new Date(item.timestamp);
+              return (
+                date.toLocaleDateString("es-ES", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                }) +
+                " " +
+                date.toLocaleTimeString("es-ES", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })
+              );
+            });
+
+            // Extraer datos de temperatura y humedad
+            const temperaturas = sensorData.map((item) => item.temperatura);
+            const humedades = sensorData.map((item) => item.humedad);
+
+            // Datos para el gráfico
+            const data = {
+              labels: labels,
+              datasets: [
+                {
+                  label: "Temperatura (°C)",
+                  data: temperaturas,
+                  fill: false,
+                  borderColor: "rgb(255, 99, 132)",
+                  backgroundColor: "rgba(255, 99, 132, 0.2)",
+                  tension: 0.2,
+                  yAxisID: "y",
+                  pointRadius: 4,
+                  pointHoverRadius: 6,
+                },
+                {
+                  label: "Humedad (%)",
+                  data: humedades,
+                  fill: false,
+                  borderColor: "rgb(54, 162, 235)",
+                  backgroundColor: "rgba(54, 162, 235, 0.2)",
+                  tension: 0.2,
+                  yAxisID: "y1",
+                  pointRadius: 4,
+                  pointHoverRadius: 6,
+                },
+                {
+                  label: "Temperatura Promedio",
+                  data: Array(labels.length).fill(estadisticasTemp.promedio),
+                  borderColor: "rgba(255, 99, 132, 0.7)",
+                  borderWidth: 1,
+                  borderDash: [5, 5],
+                  pointRadius: 0,
+                  fill: false,
+                  yAxisID: "y",
+                },
+                {
+                  label: "Humedad Promedio",
+                  data: Array(labels.length).fill(estadisticasHum.promedio),
+                  borderColor: "rgba(54, 162, 235, 0.7)",
+                  borderWidth: 1,
+                  borderDash: [5, 5],
+                  pointRadius: 0,
+                  fill: false,
+                  yAxisID: "y1",
+                },
+              ],
+            };
+
+            // Opciones del gráfico
+            const options = {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                title: {
+                  display: true,
+                  text: "Monitoreo de Temperatura y Humedad",
+                  font: {
+                    size: 20,
+                  },
+                },
+                legend: {
+                  position: "top",
+                },
+                tooltip: {
+                  mode: "index",
+                  intersect: true,
+                  callbacks: {
+                    title: function (context) {
+                      return context[0].label;
+                    },
+                    label: function (context) {
+                      let label = context.dataset.label || "";
+                      if (label) {
+                        if (label === "Temperatura (°C)") {
+                          label = "Temperatura: ";
+                          if (context.parsed.y !== null) {
+                            label += context.parsed.y.toFixed(1) + " °C";
+                          }
+                        } else if (label === "Humedad (%)") {
+                          label = "Humedad: ";
+                          if (context.parsed.y !== null) {
+                            label += context.parsed.y.toFixed(1) + " %";
+                          }
+                        } else if (label === "Temperatura Promedio") {
+                          label = "Temperatura Promedio: ";
+                          if (context.parsed.y !== null) {
+                            label += context.parsed.y.toFixed(1) + " °C";
+                          }
+                        } else if (label === "Humedad Promedio") {
+                          label = "Humedad Promedio: ";
+                          if (context.parsed.y !== null) {
+                            label += context.parsed.y.toFixed(1) + " %";
+                          }
+                        }
+                      }
+                      return label;
+                    },
+                  },
+                },
+                annotation: {
+                  annotations: {
+                    line1: {
+                      type: "line",
+                      xMin: 0,
+                      xMax: 0,
+                      borderColor: "rgba(0, 0, 0, 0.5)",
+                      borderWidth: 1,
+                      borderDash: [3, 3],
+                      display: false,
+                    },
+                  },
+                },
+                zoom: {
+                  pan: {
+                    enabled: true,
+                    mode: "x",
+                    modifierKey: null,
+                  },
+                  zoom: {
+                    wheel: {
+                      enabled: true,
+                    },
+                    pinch: {
+                      enabled: true,
+                    },
+                    mode: "x",
+                    drag: {
+                      enabled: false,
+                    },
+                  },
+                  limits: {
+                    y: { min: "original", max: "original" },
+                    y1: { min: "original", max: "original" },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  type: "linear",
+                  display: true,
+                  position: "left",
+                  title: {
+                    display: true,
+                    text: "Temperatura (°C)",
+                  },
+                  min: Math.floor(estadisticasTemp.min * 10) / 10 - 0.2,
+                  max: Math.ceil(estadisticasTemp.max * 10) / 10 + 0.2,
+                  ticks: {
+                    stepSize: 0.1,
+                  },
+                },
+                y1: {
+                  type: "linear",
+                  display: true,
+                  position: "right",
+                  title: {
+                    display: true,
+                    text: "Humedad (%)",
+                  },
+                  min: Math.floor(estadisticasHum.min * 10) / 10 - 0.2,
+                  max: Math.ceil(estadisticasHum.max * 10) / 10 + 0.2,
+                  ticks: {
+                    stepSize: 0.2,
+                  },
+                  grid: {
+                    drawOnChartArea: false,
+                  },
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Fecha y Hora",
+                  },
+                  ticks: {
+                    maxRotation: 45,
+                    minRotation: 45,
+                  },
+                  min: 0,
+                  max: 14,
+                  offset: true,
+                },
+              },
+              interaction: {
+                mode: "nearest",
+                axis: "x",
+                intersect: true,
+              },
+            };
+
+            // Crear el gráfico
+            const myChart = new Chart(ctx, {
+              type: "line",
+              data: data,
+              options: options,
+              plugins: [ChartZoom],
+            });
+
+            // Configurar el botón para restablecer el zoom
+            document
+              .getElementById("resetZoom")
+              .addEventListener("click", function () {
+                myChart.resetZoom();
+              });
+
+            // Variable para controlar si estamos en modo zoom/pan
+            let isZooming = false;
+
+            // Detectar cuando se inicia el zoom o pan
+            myChart.canvas.addEventListener("mousedown", () => {
+              isZooming = true;
+            });
+
+            // Detectar cuando se termina el zoom o pan
+            document.addEventListener("mouseup", () => {
+              isZooming = false;
+            });
+
+            // Configurar el evento de hover para mostrar la línea vertical
+            myChart.canvas.addEventListener("mousemove", (e) => {
+              if (isZooming) return;
+
+              const points = myChart.getElementsAtEventForMode(
+                e,
+                "nearest",
+                { intersect: true },
+                true
+              );
+
+              if (points.length) {
+                const firstPoint = points[0];
+                const label = myChart.data.labels[firstPoint.index];
+                const annotation =
+                  myChart.options.plugins.annotation.annotations.line1;
+
+                annotation.display = true;
+                annotation.xMin = firstPoint.index;
+                annotation.xMax = firstPoint.index;
+
+                myChart.update("none");
+              } else {
+                const annotation =
+                  myChart.options.plugins.annotation.annotations.line1;
+                if (annotation.display) {
+                  annotation.display = false;
+                  myChart.update("none");
+                }
+              }
+            });
+
+            myChart.canvas.addEventListener("mouseleave", () => {
+              const annotation =
+                myChart.options.plugins.annotation.annotations.line1;
+              annotation.display = false;
+              myChart.update("none");
+            });
+          });
+      });
+    </script>
+  </body>
+</html>
